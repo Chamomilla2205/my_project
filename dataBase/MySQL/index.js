@@ -16,15 +16,15 @@ module.exports = (() => {
                 files.forEach((file) => {
                     const [model] = file.split('.');
                     const modelFile = require(path.join(modelsPath, model));
-
-                    models[model] = modelFile(client, DataTypes)
+                    models[model] = modelFile(client, DataTypes);
                 })
             })
         };
 
         return {
-            setModel: () => getModels(),
-            getModel: (modelName) => models[modelName]
+            setModels: () => getModels(),
+            getModel: (modelName) => models[modelName],
+            transactionInst: () =>  client.transaction()
         }
     }
 
@@ -32,7 +32,7 @@ module.exports = (() => {
         getInit: () => {
             if (!instance) {
                 instance = initConnection();
-            };
+            }
             return instance;
         }
     }

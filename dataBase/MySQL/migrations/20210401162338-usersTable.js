@@ -13,7 +13,6 @@ module.exports = {
             {
                 id: {
                     type: DataTypes.INTEGER,
-                    autoIncrement: true,
                     primaryKey: true
                 },
                 name: {
@@ -35,7 +34,7 @@ module.exports = {
             }
         );
     },
-down: async (queryInterface, Sequelize) => {
+down: async (queryInterface) => {
     /**
      * Add reverting commands here.
      *

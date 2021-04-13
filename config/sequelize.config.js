@@ -1,4 +1,4 @@
-const {ROOT_EMAIL,ROOT_EMAIL_PASSWORD} = require('./config')
+
 
 module.exports = {
     "development": {

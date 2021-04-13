@@ -1,34 +1,32 @@
 const DataTypes = require('sequelize');
 
 module.exports = (client) => {
-    const User =client.define(
-        'User',
+    const confirmToken = client.define(
+        'confirmtoken',
         {
             id: {
                 type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true
             },
-            name: {
+            confirm_token: {
                 type: DataTypes.STRING
             },
-            bornYear: {
+            userId: {
                 type: DataTypes.INTEGER
             },
-            email: {
+            addTime: {
                 type: DataTypes.STRING
             },
-            password: {
+            newPass: {
                 type: DataTypes.STRING
-            },
-            role: {
-                type: DataTypes.STRING,
-                default: 'user'
             }
         },
         {
-            tableName: 'allUsers',
+            tableName: 'confirmtoken',
             timestamps: false
         }
     );
-    return User;
+    return confirmToken;
 }
+

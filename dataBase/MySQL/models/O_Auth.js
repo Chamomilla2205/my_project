@@ -1,34 +1,31 @@
 const DataTypes = require('sequelize');
 
 module.exports = (client) => {
-    const User =client.define(
-        'User',
+    const O_Auth = client.define(
+        'O_Auth',
         {
             id: {
                 type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true
             },
-            name: {
+            access_token: {
                 type: DataTypes.STRING
             },
-            bornYear: {
+            refresh_token: {
+                type: DataTypes.STRING
+            },
+            userId: {
                 type: DataTypes.INTEGER
             },
-            email: {
+            addTime: {
                 type: DataTypes.STRING
-            },
-            password: {
-                type: DataTypes.STRING
-            },
-            role: {
-                type: DataTypes.STRING,
-                default: 'user'
             }
         },
         {
-            tableName: 'allUsers',
+            tableName: 'tokens',
             timestamps: false
         }
     );
-    return User;
+    return O_Auth;
 }

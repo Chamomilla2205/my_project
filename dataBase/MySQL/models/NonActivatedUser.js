@@ -1,11 +1,12 @@
 const DataTypes = require('sequelize');
 
 module.exports = (client) => {
-    const User =client.define(
-        'User',
+    const NonActivatedUser =client.define(
+        'NonActivatedUser',
         {
             id: {
                 type: DataTypes.INTEGER,
+                autoIncrement: true,
                 primaryKey: true
             },
             name: {
@@ -26,9 +27,9 @@ module.exports = (client) => {
             }
         },
         {
-            tableName: 'allUsers',
+            tableName: 'non_activated_user',
             timestamps: false
         }
     );
-    return User;
+    return NonActivatedUser;
 }

@@ -1,8 +1,8 @@
 const DataTypes = require('sequelize');
 
 module.exports = (client) => {
-    const User =client.define(
-        'User',
+    const DeletedUser = client.define(
+        'DeletedUser',
         {
             id: {
                 type: DataTypes.INTEGER,
@@ -26,9 +26,9 @@ module.exports = (client) => {
             }
         },
         {
-            tableName: 'allUsers',
+            tableName: 'deletedUser',
             timestamps: false
         }
     );
-    return User;
+    return DeletedUser;
 }

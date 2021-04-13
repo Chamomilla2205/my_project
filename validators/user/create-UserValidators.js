@@ -1,5 +1,5 @@
 const Joi = require('joi');
-
+const {constants} = require('../../constants')
 module.exports = Joi.object({
     name: Joi
         .string()
@@ -7,18 +7,26 @@ module.exports = Joi.object({
         .min(3)
         .max(255)
         .required(),
-    age: Joi
-        .number()
-        .min(14)
-        .max(120)
+    email: Joi
+        .string()
+        .min(3)
+        .max(255)
         .required(),
-    gender: Joi
-        .boolean()
+    password: Joi
+        .string()
+        .min(3)
+        .max(255)
+        .required(),
+    bornYear: Joi
+        .number()
+        .min(constants.CURRENT_YEAR - 120)
+        .max(constants.CURRENT_YEAR - 14)
         .required(),
     hobby: Joi
         .string()
         .alphanum()
         .min(3)
-        .max(255)
-        .required()
+        .max(255),
+    role: Joi
+        .string()
 })
