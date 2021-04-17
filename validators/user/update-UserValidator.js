@@ -5,23 +5,19 @@ module.exports = Joi.object({
         .string()
         .alphanum()
         .min(3)
-        .max(255)
-        .required(),
+        .max(255),
     email: Joi
         .string()
         .min(3)
-        .max(255)
-        .required(),
+        .max(255),
     password: Joi
         .string()
         .min(3)
-        .max(255)
-        .required(),
+        .max(255),
     bornYear: Joi
         .number()
         .min(constants.CURRENT_YEAR - 120)
-        .max(constants.CURRENT_YEAR - 14)
-        .required(),
+        .max(constants.CURRENT_YEAR - 14),
     role: Joi
         .string()
 })

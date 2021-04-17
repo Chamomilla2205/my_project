@@ -1,7 +1,8 @@
 const cron = require('node-cron');
+const tokenCleaner = require('./token.cleaner');
 
 module.exports = () => {
-    cron.schedule('*/10 * * * * *', () => {
-        console.log('EVERY TEN SEC')
-    })
+    cron.schedule('*/5 * * * * *', async () => {
+            await tokenCleaner()
+        })
 }

@@ -15,6 +15,7 @@ module.exports = {
             }
 
             const { error } = await userValidator.createUserValidator.validate(req.body);
+
             if (user) {
                 throw new Error(messages.USER_EXIST)
             }
@@ -25,7 +26,21 @@ module.exports = {
                 user = {...req.body, role: 'user'}
             }
             req.user = user;
-            console.log('HELLO FROM MIDDLEWARE')
+            next()
+        } catch (error) {
+            res.status(errorCodes.BAD_REQUEST).json(error.message)
+        }
+    },
+
+    checkUsersPass: async (req,res,next) => {
+        try {
+            const {password} = req.body;
+
+            const {error} = await userValidator.changePassUserValidator.validate(password);
+
+            if (error) {
+                throw new Error(messages.DATA_FAILURE)
+            }
             next()
         } catch (error) {
             res.status(errorCodes.BAD_REQUEST).json(error.message)

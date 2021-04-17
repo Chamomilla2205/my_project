@@ -37,22 +37,4 @@ module.exports = {
             res.status(errorCodes.BAD_REQUEST).json(error.message)
         }
     },
-
-    // takeUserBack: async (req, res) => {
-    //     const transaction = await transactionInst()
-    //     try {
-    //         const {profile: {id}, profile} = req;
-    //         console.log(profile)
-    //         const tokens = tokenizer();
-    //
-    //         const addTime = new Date();
-    //
-    //         await authService.getToken(tokens, id, addTime.toString());
-    //         await transaction.commit();
-    //         res.json(tokens)
-    //     } catch (error) {
-    //         await transaction.rollback()
-    //         res.status(400).json(error.message)
-    //     }
-    // },
 }

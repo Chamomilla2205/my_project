@@ -6,7 +6,7 @@ const apiRouter = require('./router/api.router');
 const db = require('./dataBase/MySQL').getInit();
 
 const Sentry= require('./logger/sentry')
-// const cronRun = require('./cron-jobs')
+const cronRun = require('./cron-jobs')
 
 db.setModels();
 const app = express();
@@ -38,6 +38,7 @@ app.use('*', (err, req, res, next) => {
 
 app.listen(5000, () => {
     console.log('App listen 5000');
+    cronRun()
 });
 
 

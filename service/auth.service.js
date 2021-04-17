@@ -6,9 +6,6 @@ module.exports = {
 
         return O_Auth.create({...tokens, userId, addTime});
     },
-    getRefreshToken: async () => {
-
-    },
 
     checkToken: async (token) => {
         const O_Auth = db.getModel('O_Auth');

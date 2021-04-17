@@ -42,7 +42,6 @@ module.exports = {
 
             const urlWithToken = `http://localhost:5000/users/${id}/activate?confirm_token=${confirmToken}`;
 
-            // TODO MAKE VALIDATOR JOI
             const addTime = new Date();
 
             await authService.saveConfToken(
@@ -91,11 +90,10 @@ module.exports = {
                 body.password = await passwordHelper.hash(password);
             }
 
-            //TODO MAKE VALIDATOR JOI
             await userService.addChangeToUser(id, body, transaction);
 
             await transaction.commit()
-            res.json('USER CHANGED')
+            res.json(messages.CHANGED)
         } catch (error) {
             await transaction.rollback()
             res.status(errorCodes.UNAUTHORIZED).json(messages.TOKEN_IS_REQUIRED)
@@ -125,7 +123,7 @@ module.exports = {
 
             await mailService.sendMail(email, PASSWORD_CHANGED, {userName: name, urlWithToken})
 
-            res.json('We have send a confirm message on your email')
+                res.json(messages.SEND_CONFIRM_MESSAGE)
         } catch (error) {
             res.status(errorCodes.BAD_REQUEST).json(error.message)
         }
@@ -144,7 +142,7 @@ module.exports = {
             await authService.deleteConfToken(userId, transaction)
 
             await transaction.commit()
-            res.json('Password changed successfully')
+            res.json(messages.CHANGED)
         } catch (error) {
             await transaction.rollback()
             res.status(errorCodes.BAD_REQUEST).json(error.message)
@@ -154,7 +152,6 @@ module.exports = {
     restoreUser: async (req, res) => {
         const transaction = await transactionInst();
         try {
-            console.log('start')
             const {
                 body: { email, name },
                 profile: {id},
@@ -168,7 +165,7 @@ module.exports = {
             await mailService.sendMail(email, ACCOUNT_RESTORED, {userName: name})
 
             await transaction.commit()
-            res.json('ACCOUNT RESTORED')
+            res.json(messages.RESTORED)
         } catch (error) {
             await transaction.rollback()
             res.status(errorCodes.UNAUTHORIZED).json(error.message)

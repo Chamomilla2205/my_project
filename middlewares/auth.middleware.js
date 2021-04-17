@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { userService, authService } = require('../service');
-const { passwordHelper } = require('../helpers')
+const { passwordHelper } = require('../helpers');
+const {userValidator} = require('../validators')
 const { JWT_ACCESS, JWT_REFRESH, JWT_CONFIRM } = require('../config/config');
 
 const { AUTHORIZATION } = require('../constants/constants')
@@ -17,6 +18,12 @@ module.exports = {
                 if (!user) {
                     throw new Error(messages.ACCESS_FAILURE);
                 }
+            }
+
+            const { error } = await userValidator.updateUserValidator.validate(req.body)
+
+            if (error) {
+                throw new Error(messages.ACCESS_FAILURE)
             }
 
             if (value !== 'restore') {
