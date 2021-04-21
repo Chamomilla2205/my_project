@@ -1,6 +1,6 @@
 const {userService} = require('../service')
 const {userValidator} = require('../validators')
-
+const {utils} = require('../helpers')
 const {errorCodes, messages} = require('../constants')
 module.exports = {
     checkIsUserExist: async (req,res,next) => {
@@ -44,6 +44,21 @@ module.exports = {
             next()
         } catch (error) {
             res.status(errorCodes.BAD_REQUEST).json(error.message)
+        }
+    },
+
+    normalizationUserData: async (req,res,next) => {
+        try {
+            const {name, email, phone} = req.body;
+            if (name) {
+                req.body.name = utils.nameNormalizator(name);
+            }
+
+            if (email) {
+                req.body.email = utils.nameNormalizator(email);
+            }
+        } catch (error) {
+            next(error)
         }
     }
 }

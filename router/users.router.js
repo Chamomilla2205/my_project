@@ -5,6 +5,7 @@ const {userMiddleware, authMiddleware} = require('../middlewares')
 router.route('/')
     .get(userController.getAllUsers)
     .post(
+        userMiddleware.normalizationUserData,
         userMiddleware.checkIsUserExist,
         userController.createNewUser
     )

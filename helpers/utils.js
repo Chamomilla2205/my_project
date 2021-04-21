@@ -11,5 +11,17 @@ module.exports = {
         name = name.map((string) => string.charAt(0).toUpperCase() + string.slice(1)) //[john, Doe] => [john, doe]
         name = name.join(' ').trim();  // [John, Doe] => John Doe
         return name;
+    },
+
+    emailNormalizator: (email = '') => {
+        if (!email) {
+            return '';
+        }
+        email = email.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        email = email.trim();
+        email = email.replace(/[,!#$%^&*()< >?:"':;}[\]{=+]/g, '');
+        email = email.toLowerCase();
+
+        return email;
     }
 }
