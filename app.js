@@ -1,14 +1,16 @@
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const path = require('path');
-require('dotenv').config();
-const apiRouter = require('./router/api.router');
-const db = require('./dataBase/MySQL').getInit();
 
+require('dotenv').config();
+const db = require('./dataBase/MySQL').getInit();
+const apiRouter = require('./router/api.router');
 const Sentry= require('./logger/sentry')
-const cronRun = require('./cron-jobs')
+const cronRun = require('./cron-jobs');
+const {PORT} = require('./config/config')
 
 db.setModels();
+
 const app = express();
 
 app.use(Sentry.Handlers.requestHandler());
@@ -36,8 +38,8 @@ app.use('*', (err, req, res, next) => {
         });
 });
 
-app.listen(5000, () => {
-    console.log('App listen 5000');
+app.listen(PORT, () => {
+    console.log(`App listen ${PORT}`);
     cronRun()
 });
 

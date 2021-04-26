@@ -1,13 +1,13 @@
 const { tokenizer } = require('../helpers');
 const { authService } = require('../service');
-const {transactionInst} = require('../dataBase/MySQL').getInit();
+const { transactionInst } = require('../dataBase/MySQL').getInit();
 
-const {errorCodes} = require('../constants')
+const { errorCodes } = require('../constants')
 module.exports = {
     enterToAccount: async (req, res) => {
         const transaction = await transactionInst()
         try {
-            const {profile: {id}} = req;
+            const { profile: { id } } = req;
             const tokens = tokenizer.authTokens();
 
             const addTime = new Date();
@@ -21,10 +21,10 @@ module.exports = {
         }
     },
 
-    takeRefresh: async (req,res) => {
+    takeRefresh: async (req, res) => {
         const transaction = await transactionInst();
-        try{
-            const {userId} = req.tokens;
+        try {
+            const { userId } = req.tokens;
             const tokens = tokenizer.authTokens();
 
             const addTime = new Date();

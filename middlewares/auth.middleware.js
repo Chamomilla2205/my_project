@@ -83,12 +83,12 @@ module.exports = {
         }
     },
 
-    userCanDelete: async (req, res, next) => {
+    isUserIdOk: async (req, res, next) => {
         try {
             const { tokens, params: { userId } } = req;
 
             if (tokens.userId.toString() !== userId.toString()) {
-                throw new Error(messages.DELETE_ERROR)
+                throw new Error(messages.ID_ERROR)
             }
             next()
         } catch (error) {
@@ -115,6 +115,23 @@ module.exports = {
             next()
         } catch (error) {
             res.status(errorCodes.BAD_REQUEST).json(error.message)
+        }
+    },
+
+    checkRole: (roles = []) => async (req,res,next) => {
+        try {
+            const {role} = req.profile;
+            if (!roles.length) {
+                next();
+            }
+
+            if (!roles.includes(role)) {
+                throw new Error('YOU ARE NOT ADMIN, GET OUT OF HERE')
+            }
+
+            next()
+        } catch (error) {
+
         }
     }
 }

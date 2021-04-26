@@ -16,16 +16,18 @@ router.route('/:userId')
     )
     .delete(
         authMiddleware.checkAccessToken,
-        authMiddleware.userCanDelete,
+        authMiddleware.isUserIdOk,
         userController.deleteUser
     )
     .post(
         authMiddleware.checkAccessToken,
+        authMiddleware.isUserIdOk,
         authMiddleware.checkUser('restore'),
         userController.restoreUser
     )
     .put(
         authMiddleware.checkAccessToken,
+        authMiddleware.isUserIdOk,
         authMiddleware.checkUser(),
         userController.updateUser
     )

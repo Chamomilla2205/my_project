@@ -1,7 +1,7 @@
 const { passwordHelper } = require('../helpers');
 const { userService, mailService, authService } = require('../service');
 const { errorCodes, messages } = require('../constants')
-
+const {ROOT_EMAIL, ROOT_EMAIL_PASSWORD} = require('../config/config')
 const { transactionInst } = require('../dataBase/MySQL').getInit();
 
 const {tokenizer} = require('../helpers')
@@ -33,12 +33,13 @@ module.exports = {
     createNewUser: async (req, res) => {
         const transaction = await transactionInst();
         try {
-            const { email, password, name } = req.user;
+            const { email, password, name } = req.body;
+
             const hashPass = await passwordHelper.hash(password);
 
             const confirmToken = tokenizer.confirmToken();
 
-            const {id} = await userService.createUser({ ...req.user, password: hashPass }, transaction);
+            const {id} = await userService.createUser({ ...req.body, password: hashPass }, transaction);
 
             const urlWithToken = `http://localhost:5000/users/${id}/activate?confirm_token=${confirmToken}`;
 
@@ -49,7 +50,8 @@ module.exports = {
                 addTime.toString(),
                 transaction
             )
-
+            console.log(ROOT_EMAIL)
+            console.log(ROOT_EMAIL_PASSWORD)
             await mailService.sendMail(email, USER_CREATED, { userName: name, urlWithToken });
 
             await transaction.commit();

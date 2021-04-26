@@ -54,9 +54,10 @@ module.exports = {
                 req.body.name = utils.nameNormalizator(name);
             }
 
-            if (email) {
-                req.body.email = utils.nameNormalizator(email);
-            }
+            // if (email) {
+            //     req.body.email = utils.nameNormalizator(email);
+            // }
+            next()
         } catch (error) {
             next(error)
         }
