@@ -4,3 +4,4 @@ module.exports = {
     PASSWORD_CHANGED: 3,
     ACCOUNT_RESTORED: 4
 }
+

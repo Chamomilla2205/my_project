@@ -1,5 +1,5 @@
 module.exports = {
-    PORT: process.env.PORT,
+    PORT: process.env.PORT ,
     JWT_ACCESS: process.env.JWT_SECRET_ACCESS,
     JWT_REFRESH: process.env.JWT_SECRET_REFRESH,
     JWT_CONFIRM: process.env.JWT_SECRET_CONFIRM,
