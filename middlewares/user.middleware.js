@@ -7,6 +7,7 @@ module.exports = {
         try {
             const {email, role} = req.body;
             let user = await userService.getOneNonActiveUser({email});
+
             if (!user) {
                 user = await userService.getOneUser({email});
                 if (!user) {
@@ -19,12 +20,14 @@ module.exports = {
             if (user) {
                 throw new Error(messages.USER_EXIST)
             }
+            console.log(user)
             if (error) {
                 throw new Error(error.details[0].message)
             }
             if (!role) {
                 user = {...req.body, role: 'user'}
             }
+
             req.user = user;
             next()
         } catch (error) {

@@ -1,10 +1,9 @@
+const fs = require('fs-extra').promises;
+const { errorCodes, messages } = require('../constants');
 const { passwordHelper } = require('../helpers');
 const { userService, mailService, authService } = require('../service');
-const { errorCodes, messages } = require('../constants')
-const {ROOT_EMAIL, ROOT_EMAIL_PASSWORD} = require('../config/config')
 const { transactionInst } = require('../dataBase/MySQL').getInit();
-
-const {tokenizer} = require('../helpers')
+const {utils, tokenizer} = require('../helpers');
 
 const { USER_CREATED, USER_DELETED, PASSWORD_CHANGED, ACCOUNT_RESTORED } = require('../constants/emailActions.enum')
 module.exports = {
@@ -33,13 +32,63 @@ module.exports = {
     createNewUser: async (req, res) => {
         const transaction = await transactionInst();
         try {
-            const { email, password, name } = req.body;
+            const { body: {email, password, name}, photos, docs, videos, avatar } = req;
 
             const hashPass = await passwordHelper.hash(password);
 
             const confirmToken = tokenizer.confirmToken();
 
             const {id} = await userService.createUser({ ...req.body, password: hashPass }, transaction);
+
+            if (req.avatar) {
+                const { uploadPath, mainPath, pathToStatic } = await utils._builder(
+                    avatar.name,
+                    'avatar',
+                    id,
+                    'user');
+
+                await fs.mkdir(pathToStatic, {recursive: true});
+
+                await avatar.mv(mainPath);
+
+                await userService.addChangeToUser(id, { avatar: uploadPath });
+            }
+
+            if (photos.length) {
+                const uploadPathArr = [];
+                for (const item of photos) {
+                    const { uploadPath, mainPath, pathToStatic } = utils._builder(
+                        item.name,
+                        'photos',
+                        id,
+                        'user');
+
+                    await fs.mkdir(pathToStatic, { recursive: true });
+
+                    await item.mv(mainPath);
+
+                    uploadPathArr.push(uploadPath);
+                }
+                await userService.addChangeToUser(id, { photos: uploadPathArr });
+            }
+
+            if (docs.length) {
+                const uploadPathArr = [];
+                for (const item of docs) {
+                    const { uploadPath, mainPath, pathToStatic } = utils._builder(
+                        item.name,
+                        'photos',
+                        id,
+                        'user');
+
+                    await fs.mkdir(pathToStatic, { recursive: true });
+
+                    await item.mv(mainPath);
+
+                    uploadPathArr.push(uploadPath);
+                }
+                await userService.addChangeToUser(id, { photos: uploadPathArr });
+            }
 
             const urlWithToken = `http://localhost:5000/users/${id}/activate?confirm_token=${confirmToken}`;
 
@@ -50,8 +99,7 @@ module.exports = {
                 addTime.toString(),
                 transaction
             )
-            console.log(ROOT_EMAIL)
-            console.log(ROOT_EMAIL_PASSWORD)
+
             await mailService.sendMail(email, USER_CREATED, { userName: name, urlWithToken });
 
             await transaction.commit();
